@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoChat - Chat Room</title>
+    <style>
+        /* General styles */
+        body {
+            display: flex;
+            height: 100vh;
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Sidebar styles */
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: #007bff;
+            margin-bottom: 20px;
+        }
+
+        .header-logo {
+            height: 1.5em;
+            width: auto;
+            vertical-align: middle;
+        }
+
+        .sidebar {
+            width: 250px;
+            background: white;
+            padding: 20px;
+            border-right: 1px solid #eee;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .sidebar-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        /* Chat container styles */
+        .app-container {
+            display: flex;
+            width: 100%;
+            height: calc(100vh - 60px);
+            margin-bottom: 60px;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            background-color: #fff;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            background: #f8f9fa;
+        }
+
+        .input-container {
+            display: flex;
+            gap: 10px;
+        }
+
+        .message-input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1em;
+        }
+
+        /* Button styles */
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+
+        .btn-secondary {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-secondary:hover {
+            background-color: #218838;
+        }
+
+        /* Message styles */
+        .message {
+            background: white;
+            padding: 10px 15px;
+            border-radius: 20px;
+            margin-bottom: 15px;
+            max-width: 70%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .message.sent {
+            background: #007bff;
+            color: white;
+            margin-left: auto;
+        }
+
+        /* Footer styles */
+        .info-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #eee;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+            font-size: 0.9em;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2 class="sidebar-header">
+            <img src="/asset?name=logo.png" alt="EchoChat Logo" class="header-logo">
+            EchoChat
+        </h2>
+        <div class="sidebar-buttons">
+            <button class="btn-primary">Clear Chat</button>
+            <button class="btn-secondary">Home</button>
+            <button class="btn-secondary" id="accountButton">Account</button>
+            <button class="btn-secondary">About</button>
+        </div>
+    </div>
+
+    <!-- Chat container -->
+    <div class="chat-container">
+        <div class="chat-messages"></div>
+        <div class="input-container">
+            <input type="text" class="message-input" placeholder="Type your message...">
+            <button class="btn-primary" onclick="sendMessage();">Send</button>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<div class="info-footer">
+    <div class="footer-section">
+        <div class="footer-item">
+            <span class="footer-label">Status:</span>
+            <span id="connectionStatus">Connected</span>
+        </div>
+    </div>
+    <div class="legal-text">
+        © 2024 EchoChat (not really) • v1.3.7
+    </div>
+    <div class="footer-section">
+        <div class="footer-item">
+            <span class="footer-label">Online:</span>
+            <span>1,234</span>
+        </div>
+    </div>
+</div>
+
+<!-- Logout modal -->
+<div id="logoutModal" class="modal">
+    <div class="modal-content">
+        <p>Are you sure you want to logout?</p>
+        <div class="modal-buttons">
+            <button id="logoutConfirm" class="btn-primary">Logout</button>
+            <button id="logoutCancel" class="btn-secondary">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    let websocket = null;
+    let isConnected = false;
+    const RECONNECT_TIMEOUT = 5000;
+
+    // WebSocket functions
+    function connectWebSocket() {
+        websocket = new WebSocket(`ws://${window.location.host}/ws`);
+
+        websocket.onopen = () => {
+            isConnected = true;
+            updateConnectionStatus();
+        };
+
+        websocket.onmessage = (event) => {
+            appendMessage(event.data);
+        };
+
+        websocket.onclose = () => {
+            isConnected = false;
+            updateConnectionStatus();
+            setTimeout(connectWebSocket, RECONNECT_TIMEOUT);
+        };
+
+        websocket.onerror = (error) => {
+            console.error('WebSocket error:', error);
+        };
+    }
+
+    function appendMessage(html) {
+        document.querySelector('.chat-messages').innerHTML += html;
+    }
+
+    function sendMessage() {
+        if (!isConnected) return;
+
+        const messageInput = document.querySelector('.message-input');
+        const message = messageInput.value.trim();
+        const token = getCookie('token');
+
+        if (!message || !token) return;
+
+        const messageData = {
+            msg: message,
+            token: token
+        };
+
+        websocket.send(JSON.stringify(messageData));
+        messageInput.value = '';
+    }
+
+    function getCookie(name) {
+        const value = `; ${document.cookie}`;
+        const parts = value.split(`; ${name}=`);
+        if (parts.length === 2) return parts.pop().split(';').shift();
+    }
+
+    function updateConnectionStatus() {
+        const statusElement = document.getElementById('connectionStatus');
+        if (statusElement) {
+            statusElement.textContent = isConnected ? 'Connected' : 'Disconnected';
+            statusElement.style.color = isConnected ? '#28a745' : '#dc3545';
+        }
+    }
+
+    // Event listeners
+    function initializeEventListeners() {
+        // Send message on button click
+        document.querySelector('.btn-primary').addEventListener('click', sendMessage);
+
+        // Send message on Enter key
+        document.querySelector('.message-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        // Clear chat
+        document.querySelector('.sidebar-buttons .btn-primary').addEventListener('click', () => {
+            document.querySelector('.chat-messages').innerHTML = '';
+        });
+
+        // Account button to show modal
+        document.getElementById('accountButton').addEventListener('click', () => {
+            document.getElementById('logoutModal').style.display = 'flex';
+        });
+
+        // Logout confirmation
+        document.getElementById('logoutConfirm').addEventListener('click', () => {
+            // Clear all cookies
+            document.cookie.split(";").forEach(function(c) {
+                document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+            });
+            window.location.href = '/login';
+        });
+
+        // Cancel logout
+        document.getElementById('logoutCancel').addEventListener('click', () => {
+            document.getElementById('logoutModal').style.display = 'none';
+        });
+
+        // Other navigation buttons
+      document.querySelectorAll('.sidebar-buttons .btn-secondary').forEach(button => {
+          button.addEventListener('click', (e) => {
+              if (e.target.textContent === 'Home') {
+                  window.location.href = '/';
+              }  else if (e.target.textContent === 'About') {
+                  window.location.href = '/about';
+              }
+          });
+      });
+    }
+
+    // Initialize on page load
+    window.addEventListener('load', function() {
+        if (!getCookie('token')) {
+            window.location.href = '/login';
+            return;
+        }
+
+        connectWebSocket();
+        initializeEventListeners();
+    });
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', function() {
+        if (websocket) {
+            websocket.close();
+        }
+    });
+</script>
+</body>
+</html>

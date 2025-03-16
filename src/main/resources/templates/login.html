@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EchoChat - Login</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+        }
+        .login-container {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+        input, button {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        input {
+            border: 1px solid #ccc;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .register-link {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #007bff;
+            text-decoration: none;
+        }
+        .register-link:hover {
+            color: #0056b3;
+        }
+        .error-message {
+            color: red;
+            font-size: 14px;
+            display: none;
+        }
+    </style>
+    <script>
+        function handleLogin(event) {
+            event.preventDefault();
+
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            const errorMessage = document.getElementById("error-message");
+
+            fetch("/api/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ username, password })
+            }).then(response => response.json())
+              .then(data => {
+                  if (data.success) {
+                      // Store token in cookie
+                      document.cookie = `token=${encodeURIComponent(data.token)}; path=/; SameSite=Lax`;
+                      window.location.href = "/app";
+                  } else {
+                      errorMessage.style.display = "block";
+                      errorMessage.textContent = data.message || "Login failed!";
+                  }
+              })
+              .catch(error => {
+                  errorMessage.style.display = "block";
+                  errorMessage.textContent = "An error occurred. Please try again.";
+              });
+        }
+    </script>
+</head>
+<body>
+<div class="login-container">
+    <h2>Login</h2>
+    <form onsubmit="handleLogin(event)">
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <p id="error-message" class="error-message"></p>
+        <button type="submit">Login</button>
+    </form>
+    <a href="/register" class="register-link">Don't have an account? Register</a>
+</div>
+</body>
+</html>

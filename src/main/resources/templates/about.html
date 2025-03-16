@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EchoChat - About</title>
+  <style>
+    /* Previous CSS with height fixes */
+    body {
+        display: flex;
+        height: 100vh;
+        background-color: #f4f4f4;
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        flex-direction: column;
+    }
+
+    /* Add modal styles */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal-content {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        width: 300px;
+        text-align: center;
+    }
+
+    .modal-buttons {
+        display: flex;
+        gap: 10px;
+        margin-top: 20px;
+        justify-content: center;
+    }
+
+    /* Rest of existing styles remain unchanged */
+    .info-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: #fff;
+        padding: 10px 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid #eee;
+        box-shadow: 0 -2px 5px rgba(0,0,0,0.05);
+        font-size: 0.9em;
+    }
+
+    .app-container {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        margin-bottom: 60px;
+        overflow: hidden;
+    }
+
+    .sidebar {
+        width: 250px;
+        background: white;
+        padding: 20px;
+        border-right: 1px solid #eee;
+        box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+        height: 100%;
+        overflow-y: auto;
+    }
+
+    .chat-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+        background-color: #fff;
+        height: 100%;
+        overflow-y: auto;
+    }
+
+    .about-content {
+        padding: 30px;
+        line-height: 1.6;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .about-content h1 {
+        color: #007bff;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    .about-content h2 {
+        color: #333;
+        margin-top: 25px;
+        margin-bottom: 15px;
+    }
+
+    .about-content p {
+        margin-bottom: 15px;
+        color: #555;
+    }
+
+    .btn-primary {
+        background-color: #007bff;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+    .btn-secondary {
+        background-color: #28a745;
+        color: white;
+        padding: 12px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+
+    .btn-secondary:hover {
+        background-color: #218838;
+    }
+
+    .sidebar-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        color: #007bff;
+        margin-bottom: 20px;
+    }
+
+    .header-logo {
+        height: 1.5em;
+        width: auto;
+        vertical-align: middle;
+    }
+
+    .sidebar-buttons {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+  </style>
+</head>
+<body>
+<div class="app-container">
+  <div class="sidebar">
+    <h2 class="sidebar-header">
+      <img src="/asset?name=logo.png" alt="EchoChat Logo" class="header-logo">
+      EchoChat
+    </h2>
+    <div class="sidebar-buttons">
+      <button class="btn-primary">Chat</button>
+      <button class="btn-secondary">Home</button>
+      <button class="btn-secondary" id="accountButton">Account</button>
+      <button class="btn-secondary">About</button>
+    </div>
+  </div>
+
+  <!-- About Content -->
+  <div class="chat-container">
+    <div class="about-content">
+      <h1>About EchoChat (Seriously Not Serious)</h1>
+
+      <h2>Our "Mission"</h2>
+      <p>Born from a caffeine-fueled coding spree, EchoChat exists to prove that yes, you can build a chat app in a weekend (quality not guaranteed).</p>
+
+      <h2>"Features"</h2>
+      <p>• Messages sometimes arrive... eventually</p>
+      <p>• Military-grade encryption (if by "military" you mean "my little brother")</p>
+      <p>• 24/7 uptime (except when we're sleeping)</p>
+      <p>• Revolutionary "type and pray" message delivery system</p>
+
+      <h2>Tech Stack</h2>
+      <p>• Powered by hopes and dreams</p>
+      <p>• Duct-taped JavaScript</p>
+      <p>• One overworked server hamsters</p>
+      <p>• Cloud storage (literally, we put a hard drive outside)</p>
+
+      <h2>Privacy Policy</h2>
+      <p>We promise not to read your messages* while you're watching. (*Exceptions apply for funny messages)</p>
+
+      <h2>The Team</h2>
+      <p>👨💻 Sleepy Developer - Writes code in PJs</p>
+      <p>🤖 GPT-9000 - Does the actual work</p>
+      <p>☕ Coffee Machine - True MVP</p>
+      <p>🐈 Mr. Whiskers - Chief Distraction Officer</p>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<div class="info-footer">
+  <div class="footer-section">
+    <div class="footer-item">
+      <span class="footer-label">Status:</span>
+      <span id="connectionStatus">Connected</span>
+    </div>
+  </div>
+  <div class="legal-text">
+    © 2024 EchoChat (We'll probably forget to renew this) • v1.3.7
+  </div>
+  <div class="footer-section">
+    <div class="footer-item">
+      <span class="footer-label">Online:</span>
+      <span>1,234 (and 3 bots)</span>
+    </div>
+  </div>
+</div>
+
+<!-- Logout Modal -->
+<div id="logoutModal" class="modal">
+  <div class="modal-content">
+    <p>Are you sure you want to logout?</p>
+    <div class="modal-buttons">
+      <button id="logoutConfirm" class="btn-primary">Logout</button>
+      <button id="logoutCancel" class="btn-secondary">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let websocket = null;
+  let isConnected = false;
+  const RECONNECT_TIMEOUT = 5000;
+
+  function connectWebSocket() {
+      websocket = new WebSocket(`ws://${window.location.host}/ws`);
+
+      websocket.onopen = () => {
+          isConnected = true;
+          updateConnectionStatus();
+      };
+
+      websocket.onmessage = (event) => {
+
+      };
+
+      websocket.onclose = () => {
+          isConnected = false;
+          updateConnectionStatus();
+          setTimeout(connectWebSocket, RECONNECT_TIMEOUT);
+      };
+
+      websocket.onerror = (error) => {
+          console.error('WebSocket error:', error);
+      };
+  }
+
+  function updateConnectionStatus() {
+      const statusElement = document.getElementById('connectionStatus');
+      if (statusElement) {
+          statusElement.textContent = isConnected ? 'Connected' : 'Disconnected';
+          statusElement.style.color = isConnected ? '#28a745' : '#dc3545';
+      }
+  }
+
+  function initializeEventListeners() {
+      // Chat button redirect
+      document.querySelector('.sidebar-buttons .btn-primary').addEventListener('click', () => {
+          window.location.href = '/app';
+      });
+
+      // Account button shows modal
+      document.getElementById('accountButton').addEventListener('click', () => {
+          document.getElementById('logoutModal').style.display = 'flex';
+      });
+
+      // Logout confirmation
+      document.getElementById('logoutConfirm').addEventListener('click', () => {
+          // Clear all cookies
+          document.cookie.split(";").forEach(function(c) {
+              document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+          });
+          window.location.href = '/login';
+      });
+
+      // Cancel logout
+      document.getElementById('logoutCancel').addEventListener('click', () => {
+          document.getElementById('logoutModal').style.display = 'none';
+      });
+
+      // Other navigation buttons
+      document.querySelectorAll('.sidebar-buttons .btn-secondary').forEach(button => {
+          button.addEventListener('click', (e) => {
+              if (e.target.textContent === 'Home') {
+                  window.location.href = '/';
+              }  else if (e.target.textContent === 'About') {
+                  window.location.href = '/about';
+              }
+          });
+      });
+  }
+
+  window.addEventListener('load', function() {
+      if (!getCookie('token')) {
+          window.location.href = '/login';
+          return;
+      }
+
+      connectWebSocket();
+      initializeEventListeners();
+  });
+
+  function getCookie(name) {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop().split(';').shift();
+  }
+</script>
+
+</body>
+</html>
