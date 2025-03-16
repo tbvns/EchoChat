@@ -1,6 +1,6 @@
 # EchoChat
 ### This project was made in 48h to prove that making a web app in one weekend is possible
-I also needed to do that for a scholl project
+I also needed to do that for a school project
 
 It uses Spring for the backend and raw js as front end. <br/>
 It also uses SQLite so it would be quite easy to use this on a real database. <br/>
