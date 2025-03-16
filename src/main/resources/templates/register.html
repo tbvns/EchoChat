@@ -82,7 +82,7 @@
       .then(data => {
           if (data.success) {
               document.cookie = `token=${encodeURIComponent(data.token)}; path=/; SameSite=Lax`;
-              window.location.href = "/app";
+              window.location.href = "/login";
           } else {
               errorMessage.style.display = "block";
               errorMessage.textContent = data.message || "Registration failed!";
